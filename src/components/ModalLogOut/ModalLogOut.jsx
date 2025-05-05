@@ -1,5 +1,4 @@
 import css from "./LogOutModal.module.css";
-import { useMediaQuery } from "react-responsive";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { logoutThunk } from "../../redux/auth/operations"; // Redux Operations dosyasına eklenmeli
@@ -8,7 +7,7 @@ import useMedia from "../../hooks/useMedia";
 
 const LogOutModal = ({ closeModal }) => {
   const dispatch = useDispatch();
-  const { isMobile } = useMedia();
+  const { isMobile, isTablet, isDesktop } = useMedia();
 
   useEffect(() => {
     document.body.style.overflow = "hidden";

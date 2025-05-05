@@ -3,7 +3,7 @@ import Modal from "react-modal";
 import EditTransactionForm from "../EditTransactionForm/EditTransactionForm";
 import css from "./ModalEditTransaction.module.css";
 
-const ModalEditTransaction = ({ onClose, isOpen }) => {
+const ModalEditTransaction = ({ onClose, isOpen, transaction }) => {
   if (!isOpen) return null;
 
   return (
