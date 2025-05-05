@@ -11,7 +11,7 @@ const TransactionsItem = ({ transaction }) => {
   const closeModal = () => setIsModalOpen(false);
 
   const handleDelete = () => {
-    dispatch(deleteTransaction(transaction._id)); // ID'yi göndererek işlemi sil
+    dispatch(deleteTransaction(transaction.id)); // ID'yi göndererek işlemi sil
   };
 
   return (
