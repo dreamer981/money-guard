@@ -8,7 +8,7 @@ export const fetchTransactions = createAsyncThunk(
       const res = await axios.get("/transactions");
       return res.data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.message);
+      return thunkAPI.rejectWithValue(error.response?.data?.message || error.message);
     }
   }
 );
@@ -19,7 +19,7 @@ export const addTransaction = createAsyncThunk(
       const res = await axios.post("/transactions", transaction);
       return res.data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.message);
+      return thunkAPI.rejectWithValue(error.response?.data?.message || error.message);
     }
   }
 );
@@ -30,7 +30,7 @@ export const deleteTransaction = createAsyncThunk(
       const res = await axios.delete(`/transactions/${transactionId}`);
       return res.data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.message);
+      return thunkAPI.rejectWithValue(error.response?.data?.message || error.message);
     }
   }
 );
@@ -44,7 +44,7 @@ export const updateTransaction = createAsyncThunk(
       );
       return res.data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.message);
+      return thunkAPI.rejectWithValue(error.response?.data?.message || error.message);
     }
   }
 );
@@ -55,7 +55,7 @@ export const transactionCategories = createAsyncThunk(
       const res = await axios.get("/transaction-categories");
       return res.data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.message);
+      return thunkAPI.rejectWithValue(error.response?.data?.message || error.message);
     }
   }
 );
@@ -69,7 +69,7 @@ export const transactionSummary = createAsyncThunk(
       );
       return res.data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.message);
+      return thunkAPI.rejectWithValue(error.response?.data?.message || error.message);
     }
   }
 );
