@@ -25,7 +25,7 @@ const TransactionsList = () => {
   return (
     <div className={css.transactionsList}>
       {transactions.length === 0 ? (
-        <p className={css.placeholder}>Henüz işlem yok</p>
+        <p className={css.placeholder}>No transactions yet</p>
       ) : (
         <div className={css.scrollableList}>
           {transactions.map((transaction) => (
