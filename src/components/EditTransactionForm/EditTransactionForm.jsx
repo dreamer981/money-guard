@@ -5,7 +5,7 @@ import * as yup from "yup";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useDispatch } from "react-redux";
-import { updateTransaction } from "../../redux/auth/operations"; // Redux Operations dosyasına eklenmeli
+import { updateTransaction } from "../../redux/transactions/operations";
 import Icon from "../../assets/Icons";
 import css from "./EditTransactionForm.module.css";
 
