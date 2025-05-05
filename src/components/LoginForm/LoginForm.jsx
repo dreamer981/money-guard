@@ -11,14 +11,14 @@ export default function LoginForm() {
 
   const initialValues = {
     email: "",
-    passowrd: "",
+    password: "",
   };
 
   const validationSchema = Yup.object({
     email: Yup.string()
       .email("Geçerli e-mail giriniz")
       .required("Zorunlu Alan"),
-    passowrd: Yup.string()
+    password: Yup.string()
       .min(6, "Şifre en az 6 karakter olmalıdır")
       .max(12, "Şifre en fazla 12 karakter olmalıdır")
       .required("Zorunlu Alan"),
