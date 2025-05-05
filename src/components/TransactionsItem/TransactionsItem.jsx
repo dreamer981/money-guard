@@ -11,19 +11,22 @@ const TransactionsItem = ({ transaction }) => {
   const closeModal = () => setIsModalOpen(false);
 
   const handleDelete = () => {
-    dispatch(deleteTransaction(transaction.id)); 
+    dispatch(deleteTransaction(transaction.id)); // ID'yi göndererek işlemi sil
   };
 
   return (
     <div>
-      <p>Date: {transaction.date}</p>
-      <p>Type: {transaction.type}</p>
-      <p>Category: {transaction.category}</p>
-      <p>Comment: {transaction.comment}</p>
-      <p>Sum: {transaction.amount}</p>
-
-      <button onClick={openModal}>Edit</button> {/* Modal açma butonu */}
-      <button onClick={handleDelete}>Delete</button> {/* Silme butonu */}
+    <tr>
+      <td>{transaction.date}</td>
+      <td>{transaction.type}</td>
+      <td>{transaction.category}</td>
+      <td>{transaction.comment}</td>
+      <td>{transaction.amount}</td>
+      <td>
+        <button onClick={openModal}>Edit</button>
+        <button onClick={handleDelete}>Delete</button>
+      </td>
+    </tr>
 
       {/* ModalEditTransaction modal bileşeni */}
       {isModalOpen && (
