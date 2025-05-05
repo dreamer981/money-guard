@@ -3,9 +3,11 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import * as Yup from "yup";
 import { login } from "../../redux/auth/operations";
+import { useNavigate } from "react-router-dom";
 
 export default function LoginForm() {
-    const dispatch  = useDispatch()
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const initialValues = {
     email: "",
@@ -22,14 +24,17 @@ export default function LoginForm() {
       .required("Zorunlu Alan"),
   });
 
-  const loginSubmit = (values)=>{
-    dispatch(login(values))
-    
-  }
+  const loginSubmit = (values) => {
+    dispatch(login(values));
+  };
 
   return (
     <div>
-      <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={loginSubmit} >
+      <Formik
+        initialValues={initialValues}
+        validationSchema={validationSchema}
+        onSubmit={loginSubmit}
+      >
         <Form>
           <Field
             type="email"
@@ -44,6 +49,9 @@ export default function LoginForm() {
             placeholder="parolayı giriniz"
           />
           <button type="submit">Giriş Yap</button>
+          <button type="button" onClick={() => navigate("/register")}>
+            Kayıt Ol
+          </button>
         </Form>
       </Formik>
     </div>
