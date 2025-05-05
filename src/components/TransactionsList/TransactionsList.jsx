@@ -1,20 +1,57 @@
-import css from './TransactionsList.module.css';
-import { useSelector } from 'react-redux';
-import { TransactionsItem } from '../TransactionsItem/TransactionsItem';
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  selectTransactions,
+  selectIsLoading,
+  selectError,
+} from "../../redux/transactions/selectors";
+import { fetchTransactions } from "../../redux/transactions/operations";
+import TransactionsItem from "../TransactionsItem/TransactionsItem";
+// import css from "./TransactionsList.module.css";
 
 const TransactionsList = () => {
-  const transactions = useSelector((state) => state.transactions.items);
-  const isLoading = useSelector((state) => state.transactions.isLoading);
-  const error = useSelector((state) => state.transactions.error);
+  const dispatch = useDispatch();
+  const transactions = useSelector(selectTransactions);
+  const isLoading = useSelector(selectIsLoading);
+  const error = useSelector(selectError);
+
+  useEffect(() => {
+    dispatch(fetchTransactions());
+  }, [dispatch]);
+
+  if (isLoading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error}</p>;
 
   return (
-    <div className={css.transactionsList}>
-      {isLoading && <p>Loading...</p>}
-      {error && <p>{error}</p>}
-      {transactions.map((transaction) => (
-        <TransactionsItem key={transaction.id} transaction={transaction} />
-      ))}
+    <div>
+      {transactions.length === 0 ? (
+        <p>No transactions yet</p>
+      ) : (
+        <div>
+          <table>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Type</th>
+                <th>Category</th>
+                <th>Comment</th>
+                <th>Amount</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {transactions.map((transaction) => (
+                <TransactionsItem
+                  key={transaction.id}
+                  transaction={transaction}
+                />
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   );
-}
+};
+
 export default TransactionsList;
