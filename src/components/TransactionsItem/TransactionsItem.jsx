@@ -15,7 +15,7 @@ const TransactionsItem = ({ transaction }) => {
   };
 
   return (
-    <div className="transaction-item">
+    <div>
       <p>Date: {transaction.date}</p>
       <p>Type: {transaction.type}</p>
       <p>Category: {transaction.category}</p>
