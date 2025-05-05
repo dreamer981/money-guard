@@ -29,21 +29,24 @@ const TransactionsList = () => {
       ) : (
         <div>
           <table>
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Type</th>
-            <th>Category</th>
-            <th>Comment</th>
-            <th>Amount</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {transactions.map((transaction) => (
-            <TransactionsItem key={transaction.id} transaction={transaction} />
-          ))}
-          </tbody>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Type</th>
+                <th>Category</th>
+                <th>Comment</th>
+                <th>Amount</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {transactions.map((transaction) => (
+                <TransactionsItem
+                  key={transaction.id}
+                  transaction={transaction}
+                />
+              ))}
+            </tbody>
           </table>
         </div>
       )}
