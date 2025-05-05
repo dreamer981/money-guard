@@ -7,7 +7,7 @@ import {
 } from "../../redux/transactions/selectors";
 import { fetchTransactions } from "../../redux/transactions/operations";
 import TransactionsItem from "../TransactionsItem/TransactionsItem";
-import css from "./TransactionsList.module.css";
+// import css from "./TransactionsList.module.css";
 
 const TransactionsList = () => {
   const dispatch = useDispatch();
@@ -23,14 +23,28 @@ const TransactionsList = () => {
   if (error) return <p>Error: {error}</p>;
 
   return (
-    <div className={css.transactionsList}>
+    <div>
       {transactions.length === 0 ? (
-        <p className={css.placeholder}>No transactions yet</p>
+        <p>No transactions yet</p>
       ) : (
-        <div className={css.scrollableList}>
+        <div>
+          <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Type</th>
+            <th>Category</th>
+            <th>Comment</th>
+            <th>Amount</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
           {transactions.map((transaction) => (
             <TransactionsItem key={transaction.id} transaction={transaction} />
           ))}
+          </tbody>
+          </table>
         </div>
       )}
     </div>
