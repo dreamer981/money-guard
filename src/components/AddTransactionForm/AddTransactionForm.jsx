@@ -5,7 +5,7 @@ import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useDispatch } from 'react-redux';
-import { getTransaction } from "../../redux/transactions"; //redux ta transactions dosyası oluşturulmalı
+import { addTransaction } from "../../redux/transactions/operations";
 import css from './AddTransactionForm.module.css';
 
 const EXPENSE_CATEGORIES = [
@@ -21,7 +21,7 @@ const EXPENSE_CATEGORIES = [
     'Entertainment'
 ];
 
-const modalValSchema = Yup.object().shape({
+const modalValidationSchema = Yup.object().shape({
         category: Yup.string().required("Bir kategori seçiniz."),
         amount: Yup.number().positive("Miktar pozitif olmalıdır.").required("Miktar giriniz."),
         comment: Yup.string().required("Yorum ekleyiniz."),
@@ -34,7 +34,7 @@ const AddTransactionForm = ({ onClose }) => {
     const [errorMessage, setErrorMessage] = useState(null);
 
     const { register, handleSubmit, formState: { errors }, reset } = useForm({
-        resolver: yupResolver(modalValSchema),
+        resolver: yupResolver(modalValidationSchema),
         defaultValues: {
             category: "",
             amount: "",
@@ -42,7 +42,7 @@ const AddTransactionForm = ({ onClose }) => {
         },
     });
     
-    const submitHandler = async (data) => {
+    const onSubmit = async (data) => {
         const transactionData = {
             type: isIncome ? "income" : "expense",
             amount: parseFloat(data.amount),
@@ -52,7 +52,7 @@ const AddTransactionForm = ({ onClose }) => {
         };
 
         try {
-            await dispatch(getTransaction(transactionData));
+            await dispatch(addTransaction(transactionData));
             reset(); 
             onClose();
         } catch {
@@ -61,7 +61,7 @@ const AddTransactionForm = ({ onClose }) => {
     };
     
     return (
-        <form onSubmit={handleSubmit(submitHandler)}>
+        <form onSubmit={handleSubmit(onSubmit)}>
             <div>
                 <span>Income</span>
                 <label>

@@ -3,7 +3,7 @@ import { lazy, Suspense } from "react";
 // import Loader from "./components/Loader/Loader";
 import PrivateRoute from "../PrivateRoute";
 import RestrictedRoute from "../RestrictedRoute";
-import { SyncLoader } from "react-spinners";
+import Loader from "../Loader/Loader";
 import "./App.css";
 import { Toaster } from "react-hot-toast";
 
@@ -34,7 +34,7 @@ function App() {
           },
         }}
       />
-      <Suspense fallback={<SyncLoader color="#646cff" />}>
+      <Suspense fallback={<Loader />}>
         <Routes>
           <Route
             path="/register"
