@@ -1,6 +1,5 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import { lazy, Suspense } from "react";
-// import Loader from "./components/Loader/Loader";
 import PrivateRoute from "../PrivateRoute";
 import RestrictedRoute from "../RestrictedRoute";
 import Loader from "../Loader/Loader";
@@ -38,29 +37,36 @@ function App() {
         <Routes>
           <Route
             path="/register"
-            element={<RestrictedRoute component={<RegistrationPage />} />}
+            element={
+              <RestrictedRoute>
+                <RegistrationPage />
+              </RestrictedRoute>
+            }
           />
           <Route
             path="/login"
-            element={<RestrictedRoute component={<LoginPage />} />}
+            element={
+              <RestrictedRoute>
+                <LoginPage />
+              </RestrictedRoute>
+            }
           />
           <Route
             path="/dashboard"
-            element={<PrivateRoute component={<DashboardPage />} />}
-          />
-          <Route
-            path="/home"
-            element={<PrivateRoute component={<HomeTab />} />}
-          />
-          <Route
-            path="/statistics"
-            element={<PrivateRoute component={<StatisticsTab />} />}
-          />
-          <Route
-            path="/currency"
-            element={<PrivateRoute component={<CurrencyTab />} />}
-          />
-          <Route path="/" element={<Navigate to="/dashboard" />} />
+            element={
+              <PrivateRoute>
+                <DashboardPage />
+              </PrivateRoute>
+            }
+          >
+            <Route index element={<Navigate to="home" replace />} />
+
+            <Route path="home" element={<HomeTab />} />
+            <Route path="statistics" element={<StatisticsTab />} />
+            <Route path="currency" element={<CurrencyTab />} />
+          </Route>
+
+          <Route path="/" element={<Navigate to="/dashboard/home" replace />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Suspense>

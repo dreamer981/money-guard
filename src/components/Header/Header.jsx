@@ -1,10 +1,10 @@
 import css from "./Header.module.css";
 import { useSelector } from "react-redux";
-import { selectIsLoggedIn, selectUser } from "../../redux/auth/selectors"; //Redux Selectors dosyasına eklenmeli
+import { selectIsLoggedIn, selectUser } from "../../redux/auth/selectors";
 import { NavLink } from "react-router-dom";
 import Icon from "../../assets/Icons";
 import useMedia from "../../hooks/useMedia";
-import LogOutModal from "../LogOutModal/LogOutModal";
+import LogOutModal from "../ModalLogOut/ModalLogOut";
 
 import useToggle from "../../hooks/useToggle";
 
@@ -12,7 +12,7 @@ const Header = () => {
   const isLogged = useSelector(selectIsLoggedIn);
   const user = useSelector(selectUser);
 
-  const [{ isOpen, closeModal, openModal }] = useToggle();
+  const { isOpen, closeModal, openModal } = useToggle();
   const { isMobile } = useMedia();
 
   return (
@@ -29,7 +29,7 @@ const Header = () => {
           <ul>
             <li>
               {isLogged ? (
-                <p className={css.text}>{user.name}</p>
+                <p className={css.text}>{user?.name || "Anonymous"}</p>
               ) : (
                 "Hello, Anonymous"
               )}
