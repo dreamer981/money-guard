@@ -1,10 +1,7 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
-import styles from './StatisticsTable.module.css';
-
 const StatisticsTable = () => {
   const stats = useSelector(state => state.statistics.data);
-  if (!stats) return null;
+
+  const categories = stats?.categories ?? [];
 
   return (
     <div className={styles.tableContainer}>
@@ -16,16 +13,20 @@ const StatisticsTable = () => {
           </tr>
         </thead>
         <tbody>
-          {stats.categories.map(cat => (
-            <tr key={cat.name} className={styles.row}>
-              <td className={`${styles.cell} ${styles.category}`}>{cat.name}</td>
-              <td className={`${styles.cell} ${styles.amount}`}>{cat.total.toLocaleString()}</td>
+          {categories.length > 0 ? (
+            categories.map(cat => (
+              <tr key={cat.name} className={styles.row}>
+                <td className={`${styles.cell} ${styles.category}`}>{cat.name}</td>
+                <td className={`${styles.cell} ${styles.amount}`}>{cat.total.toLocaleString()}</td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td className={styles.cell} colSpan={2}>Veri yok</td>
             </tr>
-          ))}
+          )}
         </tbody>
       </table>
     </div>
   );
 };
-
-export default StatisticsTable;
