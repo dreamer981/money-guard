@@ -53,7 +53,7 @@ export const transactionCategories = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const res = await axios.get("/transaction-categories");
-      console.log("Fetched categories:", res.data);
+      // console.log("Fetched categories:", res.data);
       return res.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response?.data?.message || error.message);
