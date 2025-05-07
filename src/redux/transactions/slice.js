@@ -44,13 +44,10 @@ const transactions = createSlice({
       .addCase(deleteTransaction.pending, handlePending)
       .addCase(deleteTransaction.fulfilled, (state, action) => {
         state.isLoading = false;
-        const index = state.items.findIndex(
-          (transaction) => transaction.id === action.payload.id
+        state.items = state.items.filter(
+          (transaction) => transaction.id !== action.meta.arg // Silinen öğeyi hemen kaldır
         );
-        if (index !== -1) {
-          state.items.splice(index, 1);
-          toast.success("Transaction deleted successfully!");
-        }
+        toast.success("Transaction deleted successfully!");
       })
       .addCase(deleteTransaction.rejected, handleRejected)
       .addCase(updateTransaction.pending, handlePending)

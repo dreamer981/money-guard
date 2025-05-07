@@ -1,11 +1,12 @@
 import { useState } from "react";
 import ModalEditTransaction from "../ModalEditTransaction/ModalEditTransaction";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { deleteTransaction } from "../../redux/transactions/operations";
 
 const TransactionsItem = ({ transaction }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const dispatch = useDispatch();
+  const isLoading = useSelector((state) => state.transactions.isLoading);
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
@@ -24,7 +25,9 @@ const TransactionsItem = ({ transaction }) => {
         <td>{transaction.amount}</td>
         <td>
           <button onClick={openModal}>Edit</button>
-          <button onClick={handleDelete}>Delete</button>
+          <button onClick={handleDelete} disabled={isLoading}>
+            {isLoading ? "Deleting..." : "Delete"}
+          </button>
         </td>
       </tr>
 
