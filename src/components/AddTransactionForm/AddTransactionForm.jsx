@@ -2,26 +2,34 @@ import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import css from "./AddTransactionForm.module.css";
+import { selectCategories } from "../../redux/transactions/selectors";
 
-const modalValidationSchema = Yup.object().shape({
+const getValidationSchema = (isIncome) =>
+  Yup.object().shape({
     category: Yup.string().nullable(),
     amount: Yup.number()
-        .typeError("Amount must be a number.")
-        .positive("Amount must be positive.")
-        .required("Please enter an amount.")
-        .when("type", {
-            is: "expense",  // Harcama türü için
-            then: Yup.number().negative("Expense amount should be negative."),  // Negatif olmalı
-        }),
+      .typeError("Amount must be a number.")
+      .required("Please enter an amount.")
+      .test(
+        "amount-sign",
+        isIncome
+          ? "Amount must be positive."
+          : "Expense amount should be negative.",
+        (value) => {
+          if (typeof value !== "number") return false;
+          return isIncome ? value > 0 : value < 0;
+        }
+      ),
     comment: Yup.string().required("Please add a comment."),
-});
+  });
 
-const AddTransactionForm = ({ onClose, onSubmit, categories }) => {
+const AddTransactionForm = ({ onClose, onSubmit }) => {
   const [isIncome, setIsIncome] = useState(true);
   const [date, setDate] = useState(new Date());
+  const categories = useSelector(selectCategories);
 
   const {
     register,
@@ -29,7 +37,7 @@ const AddTransactionForm = ({ onClose, onSubmit, categories }) => {
     formState: { errors },
     reset,
   } = useForm({
-    resolver: yupResolver(modalValidationSchema),
+    resolver: yupResolver(getValidationSchema(isIncome)),
     defaultValues: {
       category: "",
       amount: "",
@@ -43,25 +51,27 @@ const AddTransactionForm = ({ onClose, onSubmit, categories }) => {
       return;
     }
 
-    // Kategoriyi name yerine id'ye göre bul
-    const selectedCategory = categories.find(
-      (cat) => cat.id === data.category
-    );
+    const selectedCategory = isIncome
+      ? categories.find((cat) => cat.type === "INCOME")
+      : categories.find((cat) => cat.id === data.category);
 
-    if (!isIncome && !selectedCategory) {
+    if (!selectedCategory) {
       alert("Category not found.");
       return;
     }
 
+    let amount = parseFloat(data.amount);
+    if (isIncome && amount < 0) amount = Math.abs(amount);
+    if (!isIncome && amount > 0) amount = -amount;
+
     const transactionData = {
       transactionDate: date.toISOString(),
       type: isIncome ? "INCOME" : "EXPENSE",
-      amount: parseFloat(data.amount),
+      amount,
       comment: data.comment,
-      ...(isIncome ? {} : { categoryId: selectedCategory.id }), // categoryId olarak id'yi gönder
+      categoryId: selectedCategory.id,
     };
 
-    console.log("Gönderilen veri:", transactionData);
     onSubmit(transactionData);
     reset();
   };
@@ -69,6 +79,8 @@ const AddTransactionForm = ({ onClose, onSubmit, categories }) => {
   useEffect(() => {
     reset({}, { keepValues: true, keepErrors: true, keepDirty: true });
   }, [isIncome, reset]);
+
+  const expenseCategories = categories?.filter((cat) => cat.type === "EXPENSE");
 
   return (
     <form onSubmit={handleSubmit(handleFormSubmit)}>
@@ -87,9 +99,9 @@ const AddTransactionForm = ({ onClose, onSubmit, categories }) => {
 
       {!isIncome && (
         <>
-          <select {...register("category")} className={css.modalCategoryDropdown}>
+          <select {...register("category")}>
             <option value="">Select a category</option>
-            {categories?.map((cat) => (
+            {expenseCategories.map((cat) => (
               <option key={cat.id} value={cat.id}>
                 {cat.name}
               </option>
@@ -99,38 +111,21 @@ const AddTransactionForm = ({ onClose, onSubmit, categories }) => {
         </>
       )}
 
-      <input
-        {...register("amount")}
-        type="number"
-        className={css.modalAmountInput}
-        placeholder="0.00"
-      />
+      <input {...register("amount")} type="number" placeholder="0.00" />
       {errors.amount && <p>{errors.amount.message}</p>}
 
       <DatePicker
         selected={date}
         onChange={(date) => setDate(date)}
-        className={css.modalDatePicker}
         dateFormat="dd.MM.yyyy"
       />
 
-      <input
-        {...register("comment")}
-        type="text"
-        className={css.modalCommentInput}
-        placeholder="Comment"
-      />
+      <input {...register("comment")} type="text" placeholder="Comment" />
       {errors.comment && <p>{errors.comment.message}</p>}
 
       <div>
-        <button type="submit" className={css.modalAddButton}>
-          ADD
-        </button>
-        <button
-          onClick={onClose}
-          type="button"
-          className={css.modalCancelButton}
-        >
+        <button type="submit">ADD</button>
+        <button onClick={onClose} type="button">
           CANCEL
         </button>
       </div>
