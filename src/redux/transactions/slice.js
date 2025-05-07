@@ -21,6 +21,7 @@ const transactions = createSlice({
   name: "transactions",
   initialState: {
     items: [],
+    categories: [],
     isLoading: false,
     error: null,
   },
@@ -80,3 +81,4 @@ const transactions = createSlice({
 });
 const transactionsReducer = transactions.reducer;
 export default transactionsReducer;
+

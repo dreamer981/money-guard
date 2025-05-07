@@ -1,36 +1,25 @@
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import css from "./AddTransactionForm.module.css";
 
-const EXPENSE_CATEGORIES = [
-  "Main expenses",
-  "Products",
-  "Car",
-  "Self care",
-  "Child care",
-  "Household products",
-  "Education",
-  "Leisure",
-  "Other expenses",
-  "Entertainment",
-];
-
 const modalValidationSchema = Yup.object().shape({
-  category: Yup.string().when("isIncome", {
-    is: false,
-    then: Yup.string().required("Please select a category."),
-  }),
-  amount: Yup.number()
-    .positive("Amount must be positive.")
-    .required("Please enter an amount."),
-  comment: Yup.string().required("Please add a comment."),
+    category: Yup.string().nullable(),
+    amount: Yup.number()
+        .typeError("Amount must be a number.")
+        .positive("Amount must be positive.")
+        .required("Please enter an amount.")
+        .when("type", {
+            is: "expense",  // Harcama türü için
+            then: Yup.number().negative("Expense amount should be negative."),  // Negatif olmalı
+        }),
+    comment: Yup.string().required("Please add a comment."),
 });
 
-const AddTransactionForm = ({ onClose, onSubmit }) => {
+const AddTransactionForm = ({ onClose, onSubmit, categories }) => {
   const [isIncome, setIsIncome] = useState(true);
   const [date, setDate] = useState(new Date());
 
@@ -49,21 +38,37 @@ const AddTransactionForm = ({ onClose, onSubmit }) => {
   });
 
   const handleFormSubmit = (data) => {
-   
+    if (!isIncome && !data.category) {
+      alert("Please select a category.");
+      return;
+    }
+
+    // Kategoriyi name yerine id'ye göre bul
+    const selectedCategory = categories.find(
+      (cat) => cat.id === data.category
+    );
+
+    if (!isIncome && !selectedCategory) {
+      alert("Category not found.");
+      return;
+    }
+
     const transactionData = {
-      type: isIncome ? "income" : "expense",
+      transactionDate: date.toISOString(),
+      type: isIncome ? "INCOME" : "EXPENSE",
       amount: parseFloat(data.amount),
       comment: data.comment,
-      date: date.toISOString().split("T")[0],
-      ...(isIncome ? {} : { category: data.category }), 
+      ...(isIncome ? {} : { categoryId: selectedCategory.id }), // categoryId olarak id'yi gönder
     };
 
-    console.log("Gönderilen veri:", transactionData); 
-
+    console.log("Gönderilen veri:", transactionData);
     onSubmit(transactionData);
     reset();
   };
 
+  useEffect(() => {
+    reset({}, { keepValues: true, keepErrors: true, keepDirty: true });
+  }, [isIncome, reset]);
 
   return (
     <form onSubmit={handleSubmit(handleFormSubmit)}>
@@ -82,14 +87,11 @@ const AddTransactionForm = ({ onClose, onSubmit }) => {
 
       {!isIncome && (
         <>
-          <select
-            {...register("category")}
-            className={css.modalCategoryDropdown}
-          >
+          <select {...register("category")} className={css.modalCategoryDropdown}>
             <option value="">Select a category</option>
-            {EXPENSE_CATEGORIES.map((cat) => (
-              <option key={cat} value={cat}>
-                {cat}
+            {categories?.map((cat) => (
+              <option key={cat.id} value={cat.id}>
+                {cat.name}
               </option>
             ))}
           </select>

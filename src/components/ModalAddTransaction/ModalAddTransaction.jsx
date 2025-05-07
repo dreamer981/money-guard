@@ -3,7 +3,7 @@ import Modal from "react-modal";
 import AddTransactionForm from "../AddTransactionForm/AddTransactionForm";
 import css from "./ModalAddTransaction.module.css";
 
-const ModalAddTransaction = ({ onClose, isOpen, onSubmit }) => {
+const ModalAddTransaction = ({ onClose, isOpen, onSubmit, categories}) => {
   return (
     <div>
       <Modal
@@ -17,7 +17,7 @@ const ModalAddTransaction = ({ onClose, isOpen, onSubmit }) => {
           ✖
         </button>
         <h2 className={css.modalTitle}>Add Transaction</h2>
-        <AddTransactionForm onClose={onClose} onSubmit={onSubmit} />
+        <AddTransactionForm onClose={onClose} onSubmit={onSubmit} categories={categories} />
       </Modal>
     </div>
   );

@@ -1,18 +1,23 @@
 import { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import TransactionsList from "../../components/TransactionsList/TransactionsList";
 import ModalAddTransaction from "../../components/ModalAddTransaction/ModalAddTransaction";
 import {
   addTransaction,
   fetchTransactions,
+  transactionCategories,
 } from "../../redux/transactions/operations";
 
 export default function HomeTab() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const dispatch = useDispatch();
 
+  const categories = useSelector((state) => state.transactions.categories);
+  console.log("Categories:", categories);
+
   useEffect(() => {
     dispatch(fetchTransactions());
+    dispatch(transactionCategories());
   }, [dispatch]);
 
   const openModal = () => setIsModalOpen(true);
@@ -36,6 +41,7 @@ export default function HomeTab() {
         isOpen={isModalOpen}
         onClose={closeModal}
         onSubmit={handleAddTransaction}
+        categories={categories}
       />
     </div>
   );
