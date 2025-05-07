@@ -4,7 +4,7 @@ import Chart from '../../components/Chart/Chart';
 import StatisticsTable from '../../components/StatisticsTable/StatisticsTable';
 import styles from './StatisticsTab.module.css';
 
-export default function StatisticsTab() {
+function StatisticsTab() {
   const now = new Date();
   const [month, setMonth] = useState(now.getMonth() + 1);
   const [year, setYear] = useState(now.getFullYear());
@@ -32,4 +32,6 @@ export default function StatisticsTab() {
       </section>
     </div>
   );
-}
+};
+
+export default StatisticsTab;
