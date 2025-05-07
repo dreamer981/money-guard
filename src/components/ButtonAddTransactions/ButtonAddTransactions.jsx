@@ -36,16 +36,17 @@ const ButtonAddTransactions = () => {
     const submitHandler = async (transactionData) => {
         try {
             const dataFormatted = {
-                date: transactionData.date,
-                type: transactionData.type.toUpperCase(),
-                categoryId: transactionData.type === 'income'
-                    ? categories['Income']
-                    : categories[transactionData.category],
-                comment: transactionData.comment,
-                amount: transactionData.type === 'income'
-                    ? transactionData.amount.toString()
-                    : `-${transactionData.amount.toString()}`
-            };
+  date: transactionData.date,
+  type: transactionData.type.toUpperCase(),
+  comment: transactionData.comment,
+  amount:
+    transactionData.type === "income"
+      ? transactionData.amount.toString()
+      : `-${transactionData.amount.toString()}`,
+  ...(transactionData.type === "expense" && {
+    categoryId: categories[transactionData.category],
+  }),
+};
 
             await dispatch(addTransaction(dataFormatted)).unwrap();
             handleCloseModal();
@@ -66,7 +67,8 @@ const ButtonAddTransactions = () => {
             {isModalOpen && (
             <ModalAddTransaction
                 onSubmit={submitHandler}
-                onClose={handleCloseModal}
+                    onClose={handleCloseModal}
+                    categories={categories}
             />
             )}
         </div>
