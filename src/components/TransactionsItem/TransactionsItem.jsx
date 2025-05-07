@@ -65,16 +65,17 @@ const TransactionsItem = ({ transaction }) => {
         </span>
       </div>
       <div className={css.buttonsmodal}>
-        <button onClick={openModal} className={css.editButton}>
-          <GoPencil />
-        </button>
-        <button
+      <button
           onClick={handleDelete}
           disabled={isLoading}
           className={css.deleteButton}
         >
           {isLoading ? "Deleting..." : "Delete"}
         </button>
+        <button onClick={openModal} className={css.editButton}>
+          <GoPencil />
+        </button>
+       
       </div>
 
       {isModalOpen && (
