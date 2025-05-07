@@ -1,7 +1,7 @@
-import css from "./LogOutModal.module.css";
+import css from "./ModalLogOut.module.css";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { logoutThunk } from "../../redux/auth/operations"; // Redux Operations dosyasına eklenmeli
+import { signout } from "../../redux/auth/operations"; // Redux Operations dosyasına eklenmeli
 import Icon from "../../assets/Icons";
 import useMedia from "../../hooks/useMedia";
 
@@ -25,7 +25,7 @@ const LogOutModal = ({ closeModal }) => {
   };
 
   const handleLogout = () => {
-    dispatch(logoutThunk());
+    dispatch(signout());
     closeModal();
   };
 

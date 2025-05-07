@@ -9,7 +9,7 @@ const Navigation = () => {
   return (
     <nav className={css.navigation}>
       <NavLink
-        to="/dashboard"
+        to="/dashboard/home"
         className={({ isActive }) =>
           isActive ? `${css.navLink} ${css.active}` : css.navLink
         }
@@ -23,7 +23,7 @@ const Navigation = () => {
       </NavLink>
 
       <NavLink
-        to="/statistics"
+        to="/dashboard/statistics"
         className={({ isActive }) =>
           isActive ? `${css.navLink} ${css.active}` : css.navLink
         }
@@ -38,7 +38,7 @@ const Navigation = () => {
 
       {isMobile && (
         <NavLink
-          to="/currency"
+          to="/dashboard/currency"
           className={({ isActive }) =>
             isActive ? `${css.navLink} ${css.active}` : css.navLink
           }

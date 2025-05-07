@@ -7,7 +7,7 @@ import {
   transactionCategories,
   transactionSummary,
 } from "./operations";
-import { toast } from "react-toastify";
+import { toast } from "react-hot-toast";
 
 const handlePending = (state) => {
   state.isLoading = true;
