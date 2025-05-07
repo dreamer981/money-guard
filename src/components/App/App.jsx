@@ -1,10 +1,13 @@
 import { Navigate, Route, Routes } from "react-router-dom";
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import PrivateRoute from "../PrivateRoute";
 import RestrictedRoute from "../RestrictedRoute";
 import Loader from "../Loader/Loader";
 import "./App.css";
 import { Toaster } from "react-hot-toast";
+import { refresh } from "../../redux/auth/operations";
+import { selectIsRefreshing } from "../../redux/auth/selectors";
 
 const RegistrationPage = lazy(() =>
   import("../../pages/RegistrationPage/RegistrationPage")
@@ -21,6 +24,16 @@ const CurrencyTab = lazy(() => import("../../pages/CurrencyTab/CurrencyTab"));
 const NotFound = lazy(() => import("../../pages/NotFound/NotFound"));
 
 function App() {
+  const dispatch = useDispatch();
+  const isRefreshing = useSelector(selectIsRefreshing);
+
+  useEffect(() => {
+    dispatch(refresh());
+  }, [dispatch]);
+  if (isRefreshing) {
+    return <Loader />;
+  }
+
   return (
     <>
       <Toaster
