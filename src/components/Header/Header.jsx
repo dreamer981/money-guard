@@ -29,7 +29,7 @@ const Header = () => {
           <ul>
             <li>
               {isLogged ? (
-                <p className={css.text}>{user?.name || "Anonymous"}</p>
+                <p className={css.text}>{user?.username || "Anonymous"}</p>
               ) : (
                 "Hello, Anonymous"
               )}
