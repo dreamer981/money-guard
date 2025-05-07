@@ -1,5 +1,8 @@
+import { useSelector } from "react-redux";
+import styles from "./StatisticsTable.module.css";
+
 const StatisticsTable = () => {
-  const stats = useSelector(state => state.statistics.data);
+  const stats = useSelector((state) => state.statistics.data);
 
   const categories = stats?.categories ?? [];
 
@@ -14,15 +17,21 @@ const StatisticsTable = () => {
         </thead>
         <tbody>
           {categories.length > 0 ? (
-            categories.map(cat => (
+            categories.map((cat) => (
               <tr key={cat.name} className={styles.row}>
-                <td className={`${styles.cell} ${styles.category}`}>{cat.name}</td>
-                <td className={`${styles.cell} ${styles.amount}`}>{cat.total.toLocaleString()}</td>
+                <td className={`${styles.cell} ${styles.category}`}>
+                  {cat.name}
+                </td>
+                <td className={`${styles.cell} ${styles.amount}`}>
+                  {cat.total.toLocaleString()}
+                </td>
               </tr>
             ))
           ) : (
             <tr>
-              <td className={styles.cell} colSpan={2}>Veri yok</td>
+              <td className={styles.cell} colSpan={2}>
+                Veri yok
+              </td>
             </tr>
           )}
         </tbody>
@@ -32,4 +41,3 @@ const StatisticsTable = () => {
 };
 
 export default StatisticsTable;
-
