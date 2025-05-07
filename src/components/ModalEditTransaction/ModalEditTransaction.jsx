@@ -3,13 +3,13 @@ import Modal from "react-modal";
 import EditTransactionForm from "../EditTransactionForm/EditTransactionForm";
 import css from "./ModalEditTransaction.module.css";
 
-const ModalEditTransaction = ({ onClose, isOpen, transaction }) => {
-  if (!isOpen) return null;
+const ModalEditTransaction = ({ onClose, openModal, transaction }) => {
+  if (!openModal) return null;
 
   return (
     <div>
       <Modal
-        isOpen={isOpen}
+        isOpen={openModal}  
         onRequestClose={onClose}
         className={css.modalEditTransaction}
         overlayClassName={css.overlay}

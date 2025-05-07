@@ -35,8 +35,9 @@ const TransactionsItem = ({ transaction }) => {
         <tr>
           <td colSpan="6">
             <ModalEditTransaction
-              transaction={transaction}
-              closeModal={closeModal}
+        transaction={transaction}
+        onClose={closeModal}
+        openModal={isModalOpen}
             />
           </td>
         </tr>
