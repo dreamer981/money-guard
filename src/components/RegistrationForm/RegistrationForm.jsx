@@ -3,9 +3,11 @@ import * as Yup from "yup";
 import { useDispatch } from "react-redux";
 import { Field, Form, Formik } from "formik";
 import { register } from "../../redux/auth/operations";
+import { useNavigate } from "react-router-dom";
 
 export default function RegistrationPage() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const initialValues = {
     username: "",
@@ -15,24 +17,51 @@ export default function RegistrationPage() {
 
   const validationSchema = Yup.object({
     username: Yup.string().required("İsim zorunludur"),
-    email: Yup.string().email("Geçerli email giriniz").required("Email zorunludur"),
-    password: Yup.string().min(6, "Şifre en az 6 karakter olmalıdır").max(12,"Şifre en fazla 12 karakter olmalıdır").required("Zorunludur!"),
+    email: Yup.string()
+      .email("Geçerli email giriniz")
+      .required("Email zorunludur"),
+    password: Yup.string()
+      .min(6, "Şifre en az 6 karakter olmalıdır")
+      .max(12, "Şifre en fazla 12 karakter olmalıdır")
+      .required("Zorunludur!"),
   });
-  
 
-  const registerSubmit = (values)=>{
-    dispatch(register(values))
-  }
+  const registerSubmit = (values) => {
+    dispatch(register(values));
+  };
 
-
-  return <div>
-    <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={registerSubmit}>
+  return (
+    <div>
+      <Formik
+        initialValues={initialValues}
+        validationSchema={validationSchema}
+        onSubmit={registerSubmit}
+      >
         <Form>
-        <Field type="text" id="username" name="username" placeholder="İsim giriniz" />
-        <Field type="email" id="email" name="email" placeholder="e-mail giriniz" />
-            <Field type="password" id="password" name="password" placeholder="parolayı giriniz" />
-            <button type="submit" >Kayıt Ol</button>
+          <Field
+            type="text"
+            id="username"
+            name="username"
+            placeholder="İsim giriniz"
+          />
+          <Field
+            type="email"
+            id="email"
+            name="email"
+            placeholder="e-mail giriniz"
+          />
+          <Field
+            type="password"
+            id="password"
+            name="password"
+            placeholder="parolayı giriniz"
+          />
+          <button type="submit">Kayıt Ol</button>
+          <button type="button" onClick={() => navigate("/login")}>
+            Giriş Yap
+          </button>
         </Form>
-    </Formik>
-  </div>;
+      </Formik>
+    </div>
+  );
 }

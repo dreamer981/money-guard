@@ -2,8 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 
-axios.defaults.baseURL = "https://wallet.b.goit.study/api";
-// https://wallet.b.goit.study/api/auth/sign-up
+axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 
 const setAuthHeader = (token) => {
   axios.defaults.headers.common.Authorization = `Bearer ${token}`;
